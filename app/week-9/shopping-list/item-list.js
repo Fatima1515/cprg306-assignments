@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Item from "./item";
 
 export default function ItemList({ items, onItemSelect }) {
   const [sortBy, setSortBy] = useState("name");
 
-  // Create a sorted copy of items (immutably)
+  // Sort items
   const sortedItems = [...items].sort((a, b) => {
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
@@ -48,13 +47,18 @@ export default function ItemList({ items, onItemSelect }) {
       {/* Item List */}
       <ul className="space-y-3">
         {sortedItems.map((item) => (
-          <Item
+          <li
             key={item.id}
-            name={item.name}
-            quantity={item.quantity}
-            category={item.category}
-            onSelect={() => onItemSelect(item)} //  pass item when clicked
-          />
+            onClick={() => onItemSelect(item)}
+            className="p-3 bg-white rounded shadow cursor-pointer hover:bg-gray-100"
+          >
+            <p className="font-bold">{item.name}</p>
+            <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+
+            {item.category && (
+              <p className="text-xs text-gray-400">Category: {item.category}</p>
+            )}
+          </li>
         ))}
       </ul>
     </div>
